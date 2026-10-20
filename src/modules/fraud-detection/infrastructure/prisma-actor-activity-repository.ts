@@ -9,7 +9,15 @@ export function createPrismaActorActivityRepository(prisma: PrismaClient): Actor
       });
     },
 
-    async countSince(address, category, since) {
+    async countSince(address, category, since, limit) {
+      if (limit !== undefined && limit > 0) {
+        const rows = await prisma.actorActivity.findMany({
+          where: { address, category, occurredAt: { gte: since } },
+          select: { id: true },
+          take: limit,
+        });
+        return rows.length;
+      }
       return prisma.actorActivity.count({
         where: { address, category, occurredAt: { gte: since } },
       });

@@ -90,7 +90,12 @@ export function createAssessActorUseCase(deps: AssessActorDeps) {
     const signals = await Promise.all(
       RULES.map(async (rule) => {
         const since = new Date(now - rule.windowHours * 60 * 60 * 1000);
-        const count = await deps.activityRepository.countSince(input.address, rule.category, since);
+        const count = await deps.activityRepository.countSince(
+          input.address,
+          rule.category,
+          since,
+          rule.threshold + 1,
+        );
         return {
           ruleType: rule.ruleType,
           category: rule.category,

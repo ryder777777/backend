@@ -18,7 +18,12 @@ export interface RecordActivityInput {
  */
 export interface ActorActivityRepository {
   record(input: RecordActivityInput): Promise<void>;
-  countSince(address: string, category: ActorActivityCategory, since: Date): Promise<number>;
+  countSince(
+    address: string,
+    category: ActorActivityCategory,
+    since: Date,
+    limit?: number,
+  ): Promise<number>;
   /**
    * Deletes rows with `occurredAt` older than `olderThan`, in batches of at
    * most `batchSize`, returning the total number of rows removed. Used by
